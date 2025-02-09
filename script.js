@@ -111,3 +111,8 @@ class Store{ //  Клас Store наслідує класс Product
     }
 }
 
+const store = new Store();
+const banana = new Product('Banana', 12, 10);
+const apple = new Product('Apple', 3, 40);
+store.products.push(banana, apple);
+console.log(store);
