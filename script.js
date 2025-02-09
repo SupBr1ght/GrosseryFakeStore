@@ -96,21 +96,18 @@
 
 
 class Product{
-    constructor(name, price, quantity, currency){
+    constructor(name, price, quantity){
         this.name = name 
         this.price = price
         this.quantity = quantity
-        this.currency =  currency
     }
 }
 
 class Store{ //  Клас Store наслідує класс Product
-    constructor(name, price, quantity,currency, revenue){
-        super(name, price, quantity, currency)
-        this.revenue = revenue
+    constructor(revenue, products, currency){
+        this.revenue = 0
+        this.products = []; // add products in the store
+        this.currency = 'UAH'
     }
 }
 
-let Banana = new Product('Banana', 10, 5, 'UAH')
-let Apple = new Product('Apple', 8, 7, 'UAH')
-let Orange = new Product('Orange', 12, 4, 'UAH')
