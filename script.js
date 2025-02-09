@@ -104,10 +104,16 @@ class Product{
 }
 
 class Store{ //  Клас Store наслідує класс Product
-    constructor(revenue, products, currency){
-        this.revenue = 0
+    constructor(){
+        this.revenue = 0;
         this.products = []; // add products in the store
-        this.currency = 'UAH'
+        this.currency = 'UAH';
+    }
+
+    showProducts(){
+        this.products.forEach((product)=>{
+            console.log(`${product.name} - ${product.price} ${this.currency} (${product.quantity} pcs)`);
+        })
     }
 }
 
@@ -115,4 +121,6 @@ const store = new Store();
 const banana = new Product('Banana', 12, 10);
 const apple = new Product('Apple', 3, 40);
 store.products.push(banana, apple);
-console.log(store);
+store.showProducts();
+
+
