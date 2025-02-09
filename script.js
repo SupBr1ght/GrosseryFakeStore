@@ -115,12 +115,28 @@ class Store{ //  Клас Store наслідує класс Product
             console.log(`${product.name} - ${product.price} ${this.currency} (${product.quantity} pcs)`);
         })
     }
+
+    addProduct (name, price, quantity){
+        if(price <=  0){
+            console.log('Invalid price');
+            return;
+        }
+        if(quantity <= 0){
+            console.log('Invalid quantity');
+            return;
+        }
+       
+        this.products.push({ name, price, quantity, currency: "UAH" });
+        console.log(`Added new product: ${name}`);
+    }
 }
 
 const store = new Store();
 const banana = new Product('Banana', 12, 10);
 const apple = new Product('Apple', 3, 40);
-store.products.push(banana, apple);
+store.products.push(banana, apple); 
+store.addProduct('Mango', 40, 10);
+store.addProduct('Mango', 40, 1);
 store.showProducts();
 
 
