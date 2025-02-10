@@ -12,10 +12,10 @@
 //     //         let convertedPrice = this.convertPrice(product.price);
 //     //         console.log(`${product.name} - ${convertedPrice} ${this.currency} (${product.quantity} pcs)`);
 //     //     });
-//     // },   
+//     // },
 //     // sellProduct(productName, amount){
 //     //     let product = this.products.find(product => product.name === productName); // check is we have this product
-       
+
 //     //     if(!product){
 //     //         console.log('Product not found');
 //     //         return
@@ -30,7 +30,7 @@
 //     //     if(product.quantity < amount){ // if your product is not enough to sell
 //     //         console.log(`Not enough ${product.name}`);
 //     //         return
-//     //     } 
+//     //     }
 //     //     else {
 //     //         product.quantity -= amount; // find the rest of your product
 //     //         this.updateRevenue(amount, product.price)
@@ -50,7 +50,7 @@
 //     //         console.log('Invalid quantity');
 //     //         return;
 //     //     }
-//     //     let existingProduct = this.products.find(product => product.name === name); // if this product are exist
+//     //     
 //     //     if (existingProduct) {
 //     //         existingProduct.quantity += quantity;
 //     //         console.log(`Updated ${name} quantity: ${existingProduct.quantity} pcs`);
@@ -77,7 +77,7 @@
 //     //         default:
 //     //             return price;
 //     //     }
-//     // } 
+//     // }
 
 // }
 // // const date = new Date();
@@ -89,54 +89,75 @@
 // // let minutes = date.getMinutes().toString().padStart(2, '0')
 // // // This arrangement can be altered based on how we want the date's format to appear.
 // // let currentDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-// // console.log(currentDate); 
+// // console.log(currentDate);
 
 // // store.setCurrency('EUR')
 // // store.showProducts()
 
-
-class Product{
-    constructor(name, price, quantity){
-        this.name = name 
-        this.price = price
-        this.quantity = quantity
-    }
+class Product {
+  constructor(name, price, quantity) {
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+  }
+  
 }
 
-class Store{ //  Клас Store наслідує класс Product
-    constructor(){
-        this.revenue = 0;
-        this.products = []; // add products in the store
-        this.currency = 'UAH';
+class Store {
+  //  Клас Store наслідує класс Product
+  constructor() {
+    this.revenue = 0;
+    this.products = []; // add products in the store
+    this.currency = "UAH";
+   
+  }
+
+  showProducts() {
+    this.products.forEach((product) => {
+      console.log(
+        `${product.name} - ${product.price} ${this.currency} (${product.quantity} pcs)`
+      );
+    });
+  }
+
+  findProduct(name){
+    return this.products.find(product => product.name === name); // if this product are exist return this product
+    
+  }
+
+  addProduct(name, price, quantity) { //sum existing products  if we don't have this product run updateProductQuantity
+    if (price <= 0) {
+      console.log("Invalid price");
+      return;
+    }
+    if (quantity <= 0) {
+      console.log("Invalid quantity");
+      return;
     }
 
-    showProducts(){
-        this.products.forEach((product)=>{
-            console.log(`${product.name} - ${product.price} ${this.currency} (${product.quantity} pcs)`);
-        })
+    if (this.findProduct(name)) {
+      this.updateProductQuantity(name, quantity);
+    } else {
+      this.products.push(new Product(name, price, quantity));
+      console.log(`Added new product: ${name}`);
     }
+  }
 
-    addProduct (name, price, quantity){
-        if(price <=  0){
-            console.log('Invalid price');
-            return;
-        }
-        if(quantity <= 0){
-            console.log('Invalid quantity');
-            return;
-        }
-       
-        this.products.push({ name, price, quantity, currency: "UAH" });
-        console.log(`Added new product: ${name}`);
+  updateProductQuantity(name, quantity) { // update quantity of a products
+    if (quantity <= 0) {
+      console.log("Invalid quantity");
+      return;
     }
+    this.findProduct(name).quantity += quantity; // quantity that exist + quantity that user enetered
+    console.log(`Updated ${name} quantity: ${this.findProduct(name).quantity} pcs`);
+  }
 }
 
 const store = new Store();
-const banana = new Product('Banana', 12, 10);
-const apple = new Product('Apple', 3, 40);
-store.products.push(banana, apple); 
-store.addProduct('Mango', 40, 10);
-store.addProduct('Mango', 40, 1);
+const banana = new Product("Banana", 12, 10);
+const apple = new Product("Apple", 3, 40);
+store.products.push(banana, apple);
 store.showProducts();
-
-
+store.addProduct("Lemone", 10, 20);
+console.table(store.products);
+store.addProduct("Lemone", 10, 2);
