@@ -134,8 +134,8 @@ class Store {
       console.log("Invalid quantity");
       return;
     }
-
-    if (this.findProduct(name)) {
+    const product = this.findProduct(name)
+    if (product) {
       this.updateProductQuantity(name, quantity);
     } else {
       this.products.push(new Product(name, price, quantity));
@@ -148,8 +148,12 @@ class Store {
       console.log("Invalid quantity");
       return;
     }
-    this.findProduct(name).quantity += quantity; // quantity that exist + quantity that user enetered
-    console.log(`Updated ${name} quantity: ${this.findProduct(name).quantity} pcs`);
+    const product = this.findProduct(name).quantity += quantity; 
+    if (!product) {
+        console.log(`Product ${name} not found.`);
+        return;
+    }
+    console.log(`Updated ${name} quantity: ${product} pcs`);
   }
 }
 
@@ -161,3 +165,4 @@ store.showProducts();
 store.addProduct("Lemone", 10, 20);
 console.table(store.products);
 store.addProduct("Lemone", 10, 2);
+store.addProduct("Mango", 10, 11)
