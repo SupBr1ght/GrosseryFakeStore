@@ -4,7 +4,6 @@ class Product {
     this.price = price;
     this.quantity = quantity;
   }
-  
 }
 
 class Store {
@@ -24,12 +23,12 @@ class Store {
     });
   }
 
-  findProduct(name){
-    return this.products.find(product => product.name === name); // if this product are exist return this product
-    
+  findProduct(name) {
+    return this.products.find((product) => product.name === name); // if this product are exist return this product
   }
 
-  addProduct(name, price, quantity) { //sum existing products  if we don't have this product run updateProductQuantity
+  addProduct(name, price, quantity) {
+    //sum existing products  if we don't have this product run updateProductQuantity
     if (price <= 0) {
       console.log("Invalid price");
       return;
@@ -38,7 +37,7 @@ class Store {
       console.log("Invalid quantity");
       return;
     }
-    let product = this.findProduct(name)
+    let product = this.findProduct(name);
     if (product) {
       this.updateProductQuantity(product, quantity);
     } else {
@@ -47,45 +46,74 @@ class Store {
     }
   }
 
-  updateProductQuantity(product, quantity) { // update quantity of a products
+  updateProductQuantity(product, quantity) {
+    // update quantity of a products
     if (quantity <= 0) {
       console.log("Invalid quantity");
       return;
     }
-    product.quantity += quantity
+    product.quantity += quantity;
     console.log(`Updated ${product.name} quantity: ${product.quantity} pcs`);
   }
 
-  getFormattedDate(){
+  getFormattedDate() {
     const date = new Date();
-    return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.` + 
-    `${date.getFullYear()} time:${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+    return (
+      `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}.` +
+      `${date.getFullYear()} time - ${date
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
+    );
   }
 
-  recordSale(name, amount, totalPrice, date){
-    this.salesHistory.push({name: name, amount: amount, totalPrice: totalPrice, date: date})
-
+  recordSale(name, amount, totalPrice, date) {
+    this.salesHistory.push({
+      name: name,
+      amount: amount,
+      totalPrice: totalPrice,
+      date: date,
+    });
   }
 
-  sellProduct(product, amount){
-    if(!product){
-      console.log(`Product ${product.name} not found`);  // check if we have this product
-      return
+  showSalesHistory(){
+  
+    console.log('💲');
+    this.salesHistory.forEach(sale=>{
+      if(sale.amount === 1){
+        console.log(`${sale.date} |  For today you've sold only ${sale.amount} ${sale.name}😥\nAnd just get ${sale.totalPrice} ${this.currency} for it! 😭😭😭 `);
+      } else{
+        console.log(`${sale.date} | Awesome for today you've sold ${sale.amount} ${sale.name}s!!!\nAnd even get ${sale.totalPrice} ${this.currency} for it! 🤑🤑🤑 `);
+      }
+    })
+  }
+  
+
+  sellProduct(product, amount) {
+    if (!product) {
+      console.log(`Product ${product.name} not found`); // check if we have this product
+      return;
     }
-    if(product.quantity < amount){ // If we have enough quantity
+    if (product.quantity < amount) {
+      // If we have enough quantity
       console.log(`Not enough ${product.name} in stock`);
-    } else{
-      
+    } else {
       product.quantity -= amount; // Quantity that we have minus amount that client wants
       let totalPrice = amount * product.price; // find how much our product cost
-      this.recordSale(product.name, amount, totalPrice, this.getFormattedDate())
-// This arrangement can be altered based on how we want the date's format to appear.
-      
-      console.table(this.salesHistory);
+      this.recordSale(
+        product.name,
+        amount,
+        totalPrice,
+        this.getFormattedDate()
+      );
+      // This arrangement can be altered based on how we want the date's format to appear.
+
+      this.showSalesHistory();
       console.log(`Quantity of our ${product.name} is ${product.quantity}`);
     }
   }
-
 }
 
 const store = new Store();
@@ -96,5 +124,5 @@ store.showProducts();
 store.addProduct("Lemone", 10, 20);
 console.table(store.products);
 store.addProduct("Lemone", 10, 2);
-store.addProduct("Mango", 10, 11)
-store.sellProduct(store.findProduct("Lemone"), 4)  
+store.addProduct("Mango", 10, 11);
+store.sellProduct(store.findProduct("Lemone"), 1);
