@@ -83,9 +83,9 @@ class Store {
     console.log('💲');
     this.salesHistory.forEach(sale=>{
       if(sale.amount === 1){
-        console.log(`${sale.date} |  For today you've sold only ${sale.amount} ${sale.name}😥\nAnd just get ${sale.totalPrice} ${this.currency} for it! 😭😭😭 `);
+        console.log(`${sale.date} |  You've sold only ${sale.amount} ${sale.name}😥\nAnd just get ${sale.totalPrice} ${this.currency} for it! 😭😭😭 `);
       } else{
-        console.log(`${sale.date} | Awesome for today you've sold ${sale.amount} ${sale.name}s!!!\nAnd even get ${sale.totalPrice} ${this.currency} for it! 🤑🤑🤑 `);
+        console.log(`${sale.date} | Now you've sold ${sale.amount} ${sale.name}s!!!\nAnd even get ${sale.totalPrice} ${this.currency} for it! 🤑🤑🤑 `);
       }
     })
   }
@@ -126,3 +126,4 @@ console.table(store.products);
 store.addProduct("Lemone", 10, 2);
 store.addProduct("Mango", 10, 11);
 store.sellProduct(store.findProduct("Lemone"), 1);
+store.sellProduct(store.findProduct("Lemone"), 2);
