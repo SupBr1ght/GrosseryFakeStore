@@ -60,7 +60,11 @@ class Store {
     const date = new Date();
     return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.` + 
     `${date.getFullYear()} time:${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-    
+  }
+
+  recordSale(name, amount, totalPrice, date){
+    this.salesHistory.push({name: name, amount: amount, totalPrice: totalPrice, date: date})
+
   }
 
   sellProduct(product, amount){
@@ -74,8 +78,9 @@ class Store {
       
       product.quantity -= amount; // Quantity that we have minus amount that client wants
       let totalPrice = amount * product.price; // find how much our product cost
+      this.recordSale(product.name, amount, totalPrice, this.getFormattedDate())
 // This arrangement can be altered based on how we want the date's format to appear.
-      this.salesHistory.push({name: product.name, amount: amount, totalPrice: totalPrice, date: this.getFormattedDate()})
+      
       console.table(this.salesHistory);
       console.log(`Quantity of our ${product.name} is ${product.quantity}`);
     }
