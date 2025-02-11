@@ -151,6 +151,20 @@ class Store {
     product.quantity += quantity
     console.log(`Updated ${product.name} quantity: ${product.quantity} pcs`);
   }
+
+  sellProduct(product, amount){
+    if(!product){
+      console.log(`Product ${product.name} not found`);  // check if we have this product
+      return
+    }
+    if(product.quantity <= 0){ // If we have enough quantity
+      console.log(`Not enough ${product.name} in stock`);
+    } else{
+      product.quantity -= amount; // Quantity that we have minus amount that client wants
+      console.log(`Quantity of our ${product.name} is ${product.quantity}`);
+    }
+    
+  }
 }
 
 const store = new Store();
@@ -162,3 +176,4 @@ store.addProduct("Lemone", 10, 20);
 console.table(store.products);
 store.addProduct("Lemone", 10, 2);
 store.addProduct("Mango", 10, 11)
+store.sellProduct(store.findProduct("Lemone"), 1)  
