@@ -56,6 +56,13 @@ class Store {
     console.log(`Updated ${product.name} quantity: ${product.quantity} pcs`);
   }
 
+  getFormattedDate(){
+    const date = new Date();
+    return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.` + 
+    `${date.getFullYear()} time:${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+    
+  }
+
   sellProduct(product, amount){
     if(!product){
       console.log(`Product ${product.name} not found`);  // check if we have this product
@@ -67,15 +74,8 @@ class Store {
       
       product.quantity -= amount; // Quantity that we have minus amount that client wants
       let totalPrice = amount * product.price; // find how much our product cost
-      const date = new Date();
-      let day = date.getDate().toString().padStart(2, '0');
-      let month = (date.getMonth() + 1).toString().padStart(2, '0');
-      let year = date.getFullYear();
-      let hours = date.getHours().toString().padStart(2, '0')
-      let minutes = date.getMinutes().toString().padStart(2, '0')
 // This arrangement can be altered based on how we want the date's format to appear.
-      let currentDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-      this.salesHistory.push({name: product.name, amount: amount, totalPrice: totalPrice, date: currentDate})
+      this.salesHistory.push({name: product.name, amount: amount, totalPrice: totalPrice, date: this.getFormattedDate()})
       console.table(this.salesHistory);
       console.log(`Quantity of our ${product.name} is ${product.quantity}`);
     }
