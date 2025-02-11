@@ -134,26 +134,22 @@ class Store {
       console.log("Invalid quantity");
       return;
     }
-    const product = this.findProduct(name)
+    let product = this.findProduct(name)
     if (product) {
-      this.updateProductQuantity(name, quantity);
+      this.updateProductQuantity(product, quantity);
     } else {
       this.products.push(new Product(name, price, quantity));
       console.log(`Added new product: ${name}`);
     }
   }
 
-  updateProductQuantity(name, quantity) { // update quantity of a products
+  updateProductQuantity(product, quantity) { // update quantity of a products
     if (quantity <= 0) {
       console.log("Invalid quantity");
       return;
     }
-    const product = this.findProduct(name).quantity += quantity; 
-    if (!product) {
-        console.log(`Product ${name} not found.`);
-        return;
-    }
-    console.log(`Updated ${name} quantity: ${product} pcs`);
+    product.quantity += quantity
+    console.log(`Updated ${product.name} quantity: ${product.quantity} pcs`);
   }
 }
 
