@@ -169,6 +169,23 @@ class Store {
     console.log("🔽 Товари з найбільшою знижкою:");
     sortedByDiscountProducts.forEach((item)=> console.log(`-${item.name}: ${item.discount}% (${item.price} ${this.currency})`));
   }
+
+  updatePrice(name, newPrice) {
+    let product = this.products.find((item) => item.name === name);
+  
+    if (!product) {
+      console.log(`❌ Товар "${name}" не знайдено.`);
+      return;
+    }
+  
+    if (newPrice <= 0) {
+      console.log(`⚠️ Помилка: ціна не може бути ${newPrice}. Введіть коректну суму.`);
+      return;
+    }
+  
+    product.price = newPrice;
+    console.log(`✅ Ціна товару "${name}" оновлена: ${product.price} ${this.currency}`);
+  }
   
 }
 
@@ -188,3 +205,4 @@ store.showTotalSale();
 store.filterAvailableProducts("Banana");
 store.sortByPrice("cheap")
 store.sortByDiscount();
+store.updatePrice("Lemon", 14)
