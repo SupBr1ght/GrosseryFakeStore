@@ -163,6 +163,12 @@ class Store {
   
     sortedProducts.forEach((item) => console.log(`- ${item.name}: ${item.price} ${this.currency}`));
   }
+
+  sortByDiscount() {
+    let sortedByDiscountProducts = [...this.products].sort((a, b) => b.discount - a.discount)
+    console.log("🔽 Товари з найбільшою знижкою:");
+    sortedByDiscountProducts.forEach((item)=> console.log(`-${item.name}: ${item.discount}% (${item.price} ${this.currency})`));
+  }
   
 }
 
@@ -181,3 +187,4 @@ store.showSalesHistory();
 store.showTotalSale();
 store.filterAvailableProducts("Banana");
 store.sortByPrice("cheap")
+store.sortByDiscount();
