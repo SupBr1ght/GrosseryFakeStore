@@ -144,6 +144,26 @@ class Store {
       const filteredAvailableProducts = (this.products.filter((item) => item.quantity > 0))
       filteredAvailableProducts.forEach((item) => console.log(`Доступні продукти є: ${item.name}`));
   }
+
+  sortByPrice(order) {
+    let sortedProducts = [...this.products]; // Копіюємо масив, щоб не змінювати оригінальний
+  
+    if (order === "cheap") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+      console.log("📉 Ціна товарів від дешевого до дорогого:");
+    } 
+    else if (order === "expensive") {
+      sortedProducts.sort((a, b) => b.price - a.price);
+      console.log("📈 Ціна товарів від дорогого до дешевого:");
+    } 
+    else {
+      console.log("❌ Помилка: Вкажіть 'cheap' або 'expensive' для сортування.");
+      return;
+    }
+  
+    sortedProducts.forEach((item) => console.log(`- ${item.name}: ${item.price} ${this.currency}`));
+  }
+  
 }
 
 // Ініціалізація магазину
@@ -160,3 +180,4 @@ store.sellProduct(store.findProduct("Banana"), 4);
 store.showSalesHistory();
 store.showTotalSale();
 store.filterAvailableProducts("Banana");
+store.sortByPrice("cheap")
