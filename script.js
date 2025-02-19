@@ -139,6 +139,11 @@ class Store {
       console.log(`✅ Знижка ${discount}% встановлена на ${name}`);
     }
   }
+
+  filterAvailableProducts(){
+      const filteredAvailableProducts = (this.products.filter((item) => item.quantity > 0))
+      filteredAvailableProducts.forEach((item) => console.log(`Доступні продукти є: ${item.name}`));
+  }
 }
 
 // Ініціалізація магазину
@@ -154,3 +159,4 @@ store.setDiscount(15, "Banana");
 store.sellProduct(store.findProduct("Banana"), 4);
 store.showSalesHistory();
 store.showTotalSale();
+store.filterAvailableProducts("Banana");
