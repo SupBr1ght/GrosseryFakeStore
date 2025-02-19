@@ -1,16 +1,16 @@
 class Product {
-  constructor(name, price, quantity) {
+  constructor(name, price, quantity, discount = 0) {
     this.name = name;
     this.price = price;
     this.quantity = quantity;
+    this.discount = discount;
   }
 }
 
 class Store {
-  //  Клас Store наслідує класс Product
   constructor() {
     this.revenue = 0;
-    this.products = []; // add products in the store
+    this.products = [];
     this.currency = "UAH";
     this.salesHistory = [];
   }
@@ -24,17 +24,12 @@ class Store {
   }
 
   findProduct(name) {
-    return this.products.find((product) => product.name === name); // if this product are exist return this product
+    return this.products.find((product) => product.name === name);
   }
 
   addProduct(name, price, quantity) {
-    //sum existing products  if we don't have this product run updateProductQuantity
-    if (price <= 0) {
-      console.log("Invalid price");
-      return;
-    }
-    if (quantity <= 0) {
-      console.log("Invalid quantity");
+    if (price <= 0 || quantity <= 0) {
+      console.log("Invalid price or quantity");
       return;
     }
     let product = this.findProduct(name);
@@ -47,7 +42,6 @@ class Store {
   }
 
   updateProductQuantity(product, quantity) {
-    // update quantity of a products
     if (quantity <= 0) {
       console.log("Invalid quantity");
       return;
@@ -69,76 +63,94 @@ class Store {
     );
   }
 
-  recordSale(name, amount, currentSaledProduct, date) {
+  recordSale(name, amount, totalSalePrice, date) {
     this.salesHistory.push({
-      name: name,
-      amount: amount,
-      currentSaledProduct: currentSaledProduct,
-      date: date,
+      name,
+      amount,
+      totalSalePrice,
+      date,
     });
   }
 
-  showSalesHistory(){
-    console.log('💲');
-    this.salesHistory.forEach(sale=>{
-      if(sale.amount <= 1){
-        console.log(`${sale.date} |  You've sold only ${sale.amount} ${sale.name}😥\nAnd just get ${sale.currentSaledProduct} ${this.currency} for it! 😭😭😭 `);
-
-      } else{
-        console.log(`${sale.date} | Now you've sold ${sale.amount} ${sale.name}s!!!\nAnd even get ${sale.currentSaledProduct} ${this.currency} for it! 🤑🤑🤑 `);
-      }
-    })
+  showSalesHistory() {
+    console.log("💲 Sales History:");
+    this.salesHistory.forEach((sale) => {
+      console.log(
+        `${sale.date} | Sold ${sale.amount} x ${sale.name} for ${sale.totalSalePrice.toFixed(2)} ${this.currency}`
+      );
+    });
   }
 
-  showTotalSale(){
-    let totalSales = 0; // define  the variable that count's how much sales we made per day
-    let totalRevenue = 0; // How much money we get per day
-    let today = this.getFormattedDate().split(" ")[0]; // get current date
-    for(let sale of this.salesHistory){
-      let saleDate = sale.date.split(" ")[0] // get sale date
-      if(saleDate === today){
-        totalSales+= sale.amount; // add amount saled products for today
-        totalRevenue+= sale.currentSaledProduct; // add how much money we got for today 
+  showTotalSale() {
+    let totalSales = 0;
+    let totalRevenue = 0;
+    let today = this.getFormattedDate().split(" ")[0];
+
+    for (let sale of this.salesHistory) {
+      let saleDate = sale.date.split(" ")[0];
+      if (saleDate === today) {
+        totalSales += sale.amount;
+        totalRevenue += sale.totalSalePrice;
       }
     }
 
     console.log(`📅 Sales for today (${today}):`);
     console.log(`🛒 Total products sold: ${totalSales}`);
-    console.log(`💰 Total revenue: ${totalRevenue} ${this.currency}`);
-    
+    console.log(`💰 Total revenue: ${totalRevenue.toFixed(2)} ${this.currency}`);
   }
-
-
-  
 
   sellProduct(product, amount) {
     if (!product) {
-      console.log(`Product not found`); // check if we have this product
+      console.log(`Product not found`);
       return;
     }
     if (product.quantity < amount) {
-      // If we have enough quantity
       console.log(`Not enough ${product.name} in stock`);
-    } else {
-      product.quantity -= amount; // Quantity that we have minus amount that client wants
-      let currentSaledProduct = amount * product.price; // find how much our product cost
-      this.recordSale(
-        product.name,
-        amount,
-        currentSaledProduct,
-        this.getFormattedDate()
+      return;
+    }
+
+    let pricePerUnit = product.price;
+    let totalSalePrice = amount * pricePerUnit;
+
+    if (product.discount > 0) {
+      pricePerUnit *= 1 - product.discount / 100;
+      totalSalePrice = parseFloat((amount * pricePerUnit).toFixed(2));
+
+      console.log(
+        `${product.name} продано зі знижкою ${product.discount}%: ${totalSalePrice.toFixed(2)} ${this.currency} (замість ${(amount * product.price).toFixed(2)} ${this.currency})`
       );
-      // This arrangement can be altered based on how we want the date's format to appear.
-      console.log(`Quantity of our ${product.name} is ${product.quantity}`);
+    } else {
+      console.log(
+        `${product.name} продано без знижки: ${totalSalePrice.toFixed(2)} ${this.currency}`
+      );
+    }
+
+    product.quantity -= amount;
+    this.recordSale(product.name, amount, totalSalePrice, this.getFormattedDate());
+    console.log(`Залишок ${product.name}: ${product.quantity} шт.`);
+  }
+
+  setDiscount(discount, name) {
+    const product = this.findProduct(name);
+    if (!product || discount <= 0 || discount > 100) {
+      console.log("Недійсна знижка!");
+    } else {
+      product.discount = discount;
+      console.log(`✅ Знижка ${discount}% встановлена на ${name}`);
     }
   }
 }
 
+// Ініціалізація магазину
 const store = new Store();
 const banana = new Product("Banana", 12, 10);
 const apple = new Product("Apple", 3, 40);
 store.products.push(banana, apple);
+
 store.showProducts();
 console.table(store.products);
+
+store.setDiscount(15, "Banana");
+store.sellProduct(store.findProduct("Banana"), 4);
 store.showSalesHistory();
 store.showTotalSale();
