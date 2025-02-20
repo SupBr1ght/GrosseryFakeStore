@@ -235,6 +235,17 @@ class Store {
       `✅ Ціна товару "${name}" оновлена: ${product.price} ${this.currency}`
     );
   }
+
+  findMostExpensiveProduct(){
+    if(!this.products.length === 0){
+      console.log(`😓 Sorry we don't have any products in our store yet, but we'll fix this soon!`);
+    } else {
+       const mostExpensive = this.products.reduce((max, product)=>{
+        return product.price > max.price ? product : max   // if b > a then b become a and to check with next value 
+       }, this.products[0])
+       console.log(`🤑 Most expensive product is 💲${mostExpensive.name}💲 for price ${mostExpensive.price} ${this.currency}`);
+    }
+  }
 }
 
 // Ініціалізація магазину
@@ -244,3 +255,4 @@ const apple = new Product("Apple", 3, 40);
 store.products.push(banana, apple);
 store.updatePrice("Banana", 14);
 store.filterByMaxPrice(40);
+store.findMostExpensiveProduct();
