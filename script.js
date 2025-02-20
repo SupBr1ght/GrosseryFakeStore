@@ -236,26 +236,33 @@ class Store {
     );
   }
 
-  findMostExpensiveProduct(){
-    if(!this.products.length){
-      console.log(`😓 Sorry we don't have any products in our store yet, but we'll fix this soon!`);
-    } else {
-       const mostExpensive = this.products.reduce((max, product)=>{
-        return product.price > max.price ? product : max   // if b > a then b become a and to check with next value 
-       }, this.products[0])
-       console.log(`🤑 Most expensive product is 💲${mostExpensive.name}💲 for price ${mostExpensive.price} ${this.currency}`);
+  isStoreEmpty() {
+    if (!this.products.length) {
+      console.log(
+        `😓 Sorry, we don't have any products in our store yet, but we'll fix this soon!`
+      );
+      return true; // Повертаємо true, якщо магазин порожній
     }
+    return false; // Якщо є товари, повертаємо false
   }
 
-  findCheapestProduct(){
-    if(!this.products.length){
-      console.log(`😓 Sorry we don't have any products in our store yet, but we'll fix this soon!`);
-    } else {
-      const mostCheapest = this.products.reduce((min, product)=>{
-        return product.price < min.price ? product : min // if b < a then b become a and to check with next value
-      }, this.products[0])
-      console.log(`🥶 Least expensive product is ❄️${mostCheapest.name}❄️ for price ${mostCheapest.price} ${this.currency}`);
-    }
+  findMostExpensiveProduct() {
+    if (this.isStoreEmpty()) return;
+    const mostExpensive = this.products.reduce((max, product) => {
+      return product.price > max.price ? product : max; // if b > a then b become a and to check with next value
+    }, this.products[0]);
+    console.log(
+      `🤑 Most expensive product is 💲${mostExpensive.name}💲 for price ${mostExpensive.price} ${this.currency}`
+    );
+  }
+
+  findCheapestProduct() {
+    const mostCheapest = this.products.reduce((min, product) => {
+      return product.price < min.price ? product : min; // if b < a then b become a and to check with next value
+    }, this.products[0]);
+    console.log(
+      `🥶 Least expensive product is ❄️${mostCheapest.name}❄️ for price ${mostCheapest.price} ${this.currency}`
+    );
   }
 }
 
@@ -267,4 +274,4 @@ store.products.push(banana, apple);
 store.updatePrice("Banana", 14);
 store.filterByMaxPrice(40);
 store.findMostExpensiveProduct();
-store.findCheapestProduct();  
+store.findCheapestProduct();
