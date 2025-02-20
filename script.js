@@ -257,6 +257,7 @@ class Store {
   }
 
   findCheapestProduct() {
+    if(this.isStoreEmpty()) return;
     const mostCheapest = this.products.reduce((min, product) => {
       return product.price < min.price ? product : min; // if b < a then b become a and to check with next value
     }, this.products[0]);
