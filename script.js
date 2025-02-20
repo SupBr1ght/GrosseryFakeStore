@@ -7,7 +7,7 @@ class Product {
    * @param {string} name - Name of the product.
    * @param {number} price - Price of the product.
    * @param {number} quantity - Quantity of products on the stock.
-   * @param {number} [discount=0] - Sales on product in percent.
+   * @param {number} [discount=0] - - Sales in percent (0-100).
    */
   constructor(name, price, quantity, discount = 0) {
     this.name = name;
@@ -53,8 +53,8 @@ class Store {
   /**
    *
    * @param {string} name - Product name.
-   * @param {string} price - Product price
-   * @param {string} quantity - Product quantity
+   * @param {number} price - Product price
+   * @param {number} quantity - Product quantity
    */
   addProduct(name, price, quantity) {
     if (price <= 0 || quantity <= 0) {
@@ -285,7 +285,7 @@ class Store {
    * Update goood price.
    * @param {string} name - Name of good.
    * @param {number} newPrice - New price of good.
-   * @returns {Product | string} - Good is undefined
+   * @returns {void} - Good is undefined
    */
   updatePrice(name, newPrice) {
     let product = this.products.find((item) => item.name === name);
@@ -309,7 +309,7 @@ class Store {
   }
   /**
    * Check if the stock is empty
-   * @returns {true | false} returns true if stock is empty otherwise false
+   * @returns {boolean} returns true if stock is empty otherwise false
    */
   isStoreEmpty() {
     if (!this.products.length) {
