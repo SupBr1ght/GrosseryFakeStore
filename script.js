@@ -76,7 +76,9 @@ class Store {
     console.log("💲 Sales History:");
     this.salesHistory.forEach((sale) => {
       console.log(
-        `${sale.date} | Sold ${sale.amount} x ${sale.name} for ${sale.totalSalePrice.toFixed(2)} ${this.currency}`
+        `${sale.date} | Sold ${sale.amount} x ${
+          sale.name
+        } for ${sale.totalSalePrice.toFixed(2)} ${this.currency}`
       );
     });
   }
@@ -96,7 +98,9 @@ class Store {
 
     console.log(`📅 Sales for today (${today}):`);
     console.log(`🛒 Total products sold: ${totalSales}`);
-    console.log(`💰 Total revenue: ${totalRevenue.toFixed(2)} ${this.currency}`);
+    console.log(
+      `💰 Total revenue: ${totalRevenue.toFixed(2)} ${this.currency}`
+    );
   }
 
   sellProduct(product, amount) {
@@ -117,16 +121,27 @@ class Store {
       totalSalePrice = parseFloat((amount * pricePerUnit).toFixed(2));
 
       console.log(
-        `${product.name} продано зі знижкою ${product.discount}%: ${totalSalePrice.toFixed(2)} ${this.currency} (замість ${(amount * product.price).toFixed(2)} ${this.currency})`
+        `${product.name} продано зі знижкою ${
+          product.discount
+        }%: ${totalSalePrice.toFixed(2)} ${this.currency} (замість ${(
+          amount * product.price
+        ).toFixed(2)} ${this.currency})`
       );
     } else {
       console.log(
-        `${product.name} продано без знижки: ${totalSalePrice.toFixed(2)} ${this.currency}`
+        `${product.name} продано без знижки: ${totalSalePrice.toFixed(2)} ${
+          this.currency
+        }`
       );
     }
 
     product.quantity -= amount;
-    this.recordSale(product.name, amount, totalSalePrice, this.getFormattedDate());
+    this.recordSale(
+      product.name,
+      amount,
+      totalSalePrice,
+      this.getFormattedDate()
+    );
     console.log(`Залишок ${product.name}: ${product.quantity} шт.`);
   }
 
@@ -140,53 +155,86 @@ class Store {
     }
   }
 
-  filterAvailableProducts(){
-      const filteredAvailableProducts = (this.products.filter((item) => item.quantity > 0))
-      filteredAvailableProducts.forEach((item) => console.log(`Доступні продукти є: ${item.name}`));
+  filterAvailableProducts() {
+    const filteredAvailableProducts = this.products.filter(
+      (item) => item.quantity > 0
+    );
+    filteredAvailableProducts.forEach((item) =>
+      console.log(`Доступні продукти є: ${item.name}`)
+    );
   }
 
   sortByPrice(order) {
     let sortedProducts = [...this.products]; // Копіюємо масив, щоб не змінювати оригінальний
-  
+
     if (order === "cheap") {
       sortedProducts.sort((a, b) => a.price - b.price);
       console.log("📉 Ціна товарів від дешевого до дорогого:");
-    } 
-    else if (order === "expensive") {
+    } else if (order === "expensive") {
       sortedProducts.sort((a, b) => b.price - a.price);
       console.log("📈 Ціна товарів від дорогого до дешевого:");
-    } 
-    else {
-      console.log("❌ Помилка: Вкажіть 'cheap' або 'expensive' для сортування.");
+    } else {
+      console.log(
+        "❌ Помилка: Вкажіть 'cheap' або 'expensive' для сортування."
+      );
       return;
     }
-  
-    sortedProducts.forEach((item) => console.log(`- ${item.name}: ${item.price} ${this.currency}`));
+
+    sortedProducts.forEach((item) =>
+      console.log(`- ${item.name}: ${item.price} ${this.currency}`)
+    );
   }
 
   sortByDiscount() {
-    let sortedByDiscountProducts = [...this.products].sort((a, b) => b.discount - a.discount)
+    let sortedByDiscountProducts = [...this.products].sort(
+      (a, b) => b.discount - a.discount
+    );
     console.log("🔽 Товари з найбільшою знижкою:");
-    sortedByDiscountProducts.forEach((item)=> console.log(`-${item.name}: ${item.discount}% (${item.price} ${this.currency})`));
+    sortedByDiscountProducts.forEach((item) =>
+      console.log(
+        `-${item.name}: ${item.discount}% (${item.price} ${this.currency})`
+      )
+    );
+  }
+
+  filterByMaxPrice(max_price) {
+    if (max_price <= 0 || isNaN(max_price)) {
+      console.log("❌ Некоректна ціна! Введіть число більше за 0.");
+      return;
+    }
+
+    const filteredByPrice = this.products.filter(
+      (product) => product.price <= max_price
+    );
+
+    if (filteredByPrice.length === 0) {
+      console.log(`⚠️ Немає товарів дешевших за ${max_price} ${this.currency}`);
+    } else {
+      console.log(`🛒 Ось доступні продукти до ${max_price} ${this.currency}:`);
+      console.table(filteredByPrice); // Виводимо в таблиці
+    }
   }
 
   updatePrice(name, newPrice) {
     let product = this.products.find((item) => item.name === name);
-  
+
     if (!product) {
       console.log(`❌ Товар "${name}" не знайдено.`);
       return;
     }
-  
+
     if (newPrice <= 0) {
-      console.log(`⚠️ Помилка: ціна не може бути ${newPrice}. Введіть коректну суму.`);
+      console.log(
+        `⚠️ Помилка: ціна не може бути ${newPrice}. Введіть коректну суму.`
+      );
       return;
     }
-  
+
     product.price = newPrice;
-    console.log(`✅ Ціна товару "${name}" оновлена: ${product.price} ${this.currency}`);
+    console.log(
+      `✅ Ціна товару "${name}" оновлена: ${product.price} ${this.currency}`
+    );
   }
-  
 }
 
 // Ініціалізація магазину
@@ -194,15 +242,5 @@ const store = new Store();
 const banana = new Product("Banana", 12, 10);
 const apple = new Product("Apple", 3, 40);
 store.products.push(banana, apple);
-
-store.showProducts();
-console.table(store.products);
-
-store.setDiscount(15, "Banana");
-store.sellProduct(store.findProduct("Banana"), 4);
-store.showSalesHistory();
-store.showTotalSale();
-store.filterAvailableProducts("Banana");
-store.sortByPrice("cheap")
-store.sortByDiscount();
-store.updatePrice("Lemon", 14)
+store.updatePrice("Banana", 14);
+store.filterByMaxPrice(40);
