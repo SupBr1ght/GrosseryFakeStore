@@ -1,4 +1,14 @@
+/**
+ * Represents new product in the shop
+ */
 class Product {
+  /**
+   *
+   * @param {string} name - Name of the product.
+   * @param {number} price - Price of the product.
+   * @param {number} quantity - Quantity of products on the stock.
+   * @param {number} [discount=0] - Sales on product in percent.
+   */
   constructor(name, price, quantity, discount = 0) {
     this.name = name;
     this.price = price;
@@ -7,7 +17,13 @@ class Product {
   }
 }
 
+/**
+ * Class that represents shop with goods.
+ */
 class Store {
+  /**
+   * Creates a new shop.
+   */
   constructor() {
     this.revenue = 0;
     this.products = [];
@@ -15,6 +31,9 @@ class Store {
     this.salesHistory = [];
   }
 
+  /**
+   * Displays list of products in our shop.
+   */
   showProducts() {
     this.products.forEach((product) => {
       console.log(
@@ -22,11 +41,21 @@ class Store {
       );
     });
   }
-
+  /**
+   *
+   * @param {string} name - Product name.
+   * @returns {Product | undefined}  - Return found product or undefined, If we don't have this product.
+   */
   findProduct(name) {
     return this.products.find((product) => product.name === name);
   }
 
+  /**
+   *
+   * @param {string} name - Product name.
+   * @param {string} price - Product price
+   * @param {string} quantity - Product quantity
+   */
   addProduct(name, price, quantity) {
     if (price <= 0 || quantity <= 0) {
       console.log("Invalid price or quantity");
@@ -41,6 +70,11 @@ class Store {
     }
   }
 
+  /**
+   *
+   * @param {Product} product - Object of product.
+   * @param {number} quantity - Additional product quantity.
+   */
   updateProductQuantity(product, quantity) {
     if (quantity <= 0) {
       console.log("Invalid quantity");
@@ -49,7 +83,10 @@ class Store {
     product.quantity += quantity;
     console.log(`Updated ${product.name} quantity: ${product.quantity} pcs`);
   }
-
+  /**
+   *
+   * @returns {string} - Formatted date.
+   */
   getFormattedDate() {
     const date = new Date();
     return (
@@ -62,7 +99,13 @@ class Store {
         .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
     );
   }
-
+  /**
+   *
+   * @param {string} name - Name of good.
+   * @param {number} amount - Amount of good.
+   * @param {number} totalSalePrice - Total price sum.
+   * @param {string} date - Date when product where sold.
+   */
   recordSale(name, amount, totalSalePrice, date) {
     this.salesHistory.push({
       name,
@@ -72,6 +115,9 @@ class Store {
     });
   }
 
+  /**
+   * Show history of sales.
+   */
   showSalesHistory() {
     console.log("💲 Sales History:");
     this.salesHistory.forEach((sale) => {
@@ -82,7 +128,9 @@ class Store {
       );
     });
   }
-
+  /**
+   * Show how much we sell for today.
+   */
   showTotalSale() {
     let totalSales = 0;
     let totalRevenue = 0;
@@ -102,7 +150,11 @@ class Store {
       `💰 Total revenue: ${totalRevenue.toFixed(2)} ${this.currency}`
     );
   }
-
+  /**
+   * Sell products for sale or without.
+   * @param {Product} product - Product for sell.
+   * @param {string} amount - How much we want to sell.
+   */
   sellProduct(product, amount) {
     if (!product) {
       console.log(`Product not found`);
@@ -121,7 +173,7 @@ class Store {
       totalSalePrice = parseFloat((amount * pricePerUnit).toFixed(2));
 
       console.log(
-        `${product.name} продано зі знижкою ${
+        `${product.name} to be sold for sale ${
           product.discount
         }%: ${totalSalePrice.toFixed(2)} ${this.currency} (замість ${(
           amount * product.price
@@ -129,9 +181,9 @@ class Store {
       );
     } else {
       console.log(
-        `${product.name} продано без знижки: ${totalSalePrice.toFixed(2)} ${
-          this.currency
-        }`
+        `${product.name} to be sold without sale: ${totalSalePrice.toFixed(
+          2
+        )} ${this.currency}`
       );
     }
 
@@ -142,41 +194,50 @@ class Store {
       totalSalePrice,
       this.getFormattedDate()
     );
-    console.log(`Залишок ${product.name}: ${product.quantity} шт.`);
+    console.log(`Rest ${product.name}: ${product.quantity} шт.`);
   }
-
+  /**
+   * Set the discount on the good.
+   * @param {number} discount
+   * @param {string} name
+   */
   setDiscount(discount, name) {
     const product = this.findProduct(name);
     if (!product || discount <= 0 || discount > 100) {
-      console.log("Недійсна знижка!");
+      console.log("Discount isn't available!");
     } else {
       product.discount = discount;
-      console.log(`✅ Знижка ${discount}% встановлена на ${name}`);
+      console.log(`✅ Discount ${discount}% is settled up on ${name}`);
     }
   }
-
+  /**
+   * Show to us which product's are available.
+   */
   filterAvailableProducts() {
     const filteredAvailableProducts = this.products.filter(
       (item) => item.quantity > 0
     );
     filteredAvailableProducts.forEach((item) =>
-      console.log(`Доступні продукти є: ${item.name}`)
+      console.log(`Available products is: ${item.name}`)
     );
   }
 
+  /**
+   *
+   * @param {string} order - In wich order we want to sort our prices:
+   *  if from cheap to expensive enter "cheap" if from expensive to cheap  enter "expensive".
+   */
   sortByPrice(order) {
     let sortedProducts = [...this.products]; // Копіюємо масив, щоб не змінювати оригінальний
 
     if (order === "cheap") {
       sortedProducts.sort((a, b) => a.price - b.price);
-      console.log("📉 Ціна товарів від дешевого до дорогого:");
+      console.log("📉 The price of goods ranges from cheap to expensive:");
     } else if (order === "expensive") {
       sortedProducts.sort((a, b) => b.price - a.price);
-      console.log("📈 Ціна товарів від дорогого до дешевого:");
+      console.log("📈 The price of goods ranges from expensive to cheap:");
     } else {
-      console.log(
-        "❌ Помилка: Вкажіть 'cheap' або 'expensive' для сортування."
-      );
+      console.log("❌ Error! Enter 'cheap' or 'expensive' for sort.");
       return;
     }
 
@@ -185,18 +246,24 @@ class Store {
     );
   }
 
+  /**
+   * Show good with biggest sale.
+   */
   sortByDiscount() {
     let sortedByDiscountProducts = [...this.products].sort(
       (a, b) => b.discount - a.discount
     );
-    console.log("🔽 Товари з найбільшою знижкою:");
+    console.log("🔽 Good with biggest sale:");
     sortedByDiscountProducts.forEach((item) =>
       console.log(
         `-${item.name}: ${item.discount}% (${item.price} ${this.currency})`
       )
     );
   }
-
+  /**
+   * Show good for biggest price
+   * @param {number} max_price
+   */
   filterByMaxPrice(max_price) {
     if (max_price <= 0 || isNaN(max_price)) {
       console.log("❌ Некоректна ціна! Введіть число більше за 0.");
@@ -214,7 +281,12 @@ class Store {
       console.table(filteredByPrice); // Виводимо в таблиці
     }
   }
-
+  /**
+   * Update goood price.
+   * @param {string} name - Name of good.
+   * @param {number} newPrice - New price of good.
+   * @returns {Product | string} - Good is undefined
+   */
   updatePrice(name, newPrice) {
     let product = this.products.find((item) => item.name === name);
 
@@ -235,17 +307,23 @@ class Store {
       `✅ Ціна товару "${name}" оновлена: ${product.price} ${this.currency}`
     );
   }
-
+  /**
+   * Check if the stock is empty
+   * @returns {true | false} returns true if stock is empty otherwise false
+   */
   isStoreEmpty() {
     if (!this.products.length) {
       console.log(
         `😓 Sorry, we don't have any products in our store yet, but we'll fix this soon!`
       );
-      return true; // Повертаємо true, якщо магазин порожній
+      return true; // returns true, if stock is empty
     }
-    return false; // Якщо є товари, повертаємо false
+    return false; // If have goods, return false
   }
 
+  /**
+   * Show most expensive product
+   */
   findMostExpensiveProduct() {
     if (this.isStoreEmpty()) return;
     const mostExpensive = this.products.reduce((max, product) => {
@@ -255,9 +333,11 @@ class Store {
       `🤑 Most expensive product is 💲${mostExpensive.name}💲 for price ${mostExpensive.price} ${this.currency}`
     );
   }
-
+  /**
+   * Show most cheapest product
+   */
   findCheapestProduct() {
-    if(this.isStoreEmpty()) return;
+    if (this.isStoreEmpty()) return;
     const mostCheapest = this.products.reduce((min, product) => {
       return product.price < min.price ? product : min; // if b < a then b become a and to check with next value
     }, this.products[0]);
@@ -265,13 +345,17 @@ class Store {
       `🥶 Least expensive product is ❄️${mostCheapest.name}❄️ for price ${mostCheapest.price} ${this.currency}`
     );
   }
-
-  getTotalStockValue(){
-    if(this.isStoreEmpty()) return;
-    const totalStock = this.products.reduce((acc, product)=>{
-      return acc + (product.price * product.quantity); 
+  /**
+   * How much money we will have if we sold all the goods in our stock!
+   */
+  getTotalStockValue() {
+    if (this.isStoreEmpty()) return;
+    const totalStock = this.products.reduce((acc, product) => {
+      return acc + product.price * product.quantity;
     }, 0);
-    console.log(`We'll sell all what we have in our stock for ${totalStock} ${this.currency}🤑🤑🤑🤑🤑🤑`);
+    console.log(
+      `We'll sell all what we have in our stock for ${totalStock} ${this.currency}🤑🤑🤑🤑🤑🤑`
+    );
   }
 }
 
