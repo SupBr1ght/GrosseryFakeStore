@@ -265,6 +265,14 @@ class Store {
       `🥶 Least expensive product is ❄️${mostCheapest.name}❄️ for price ${mostCheapest.price} ${this.currency}`
     );
   }
+
+  getTotalStockValue(){
+    if(this.isStoreEmpty()) return;
+    const totalStock = this.products.reduce((acc, product)=>{
+      return acc + (product.price * product.quantity); 
+    }, 0);
+    console.log(`We'll sell all what we have in our stock for ${totalStock} ${this.currency}🤑🤑🤑🤑🤑🤑`);
+  }
 }
 
 // Ініціалізація магазину
@@ -276,3 +284,4 @@ store.updatePrice("Banana", 14);
 store.filterByMaxPrice(40);
 store.findMostExpensiveProduct();
 store.findCheapestProduct();
+store.getTotalStockValue();
