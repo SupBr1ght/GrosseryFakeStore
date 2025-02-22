@@ -2,14 +2,15 @@ require('dotenv').config(); // connect enviorment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const productRoutes = require('./routes/productRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 5000; // port not found
 
 // Middleware
 app.use(express.json()); // Allows works with JSON requests
-app.use(cors()); // Alloows Front End works with BackEnd
-
+app.use(cors()); // Allows Front End works with BackEnd
+app.use('/api', productRoutes);
 
 // connect MongoDB
 mongoose.connect(process.env.MONGO_URI, {
