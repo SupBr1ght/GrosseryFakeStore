@@ -6,7 +6,7 @@ const createProduct = async (product) => {
     await newProduct.save();
 
     console.log("✅ Збережений товар:", newProduct); // Лог після збережен
-    
+
     return await Product.findById(newProduct._id)
         .select("-createdAt -updatedAt -__v")
         .lean(); // `lean()` змушує MongoDB повернути чистий JS-об'єкт
@@ -17,5 +17,13 @@ const createMultipleProducts = async (products) =>{
     console.log("Arrays of products into MongoDB", products);
     return await Product.insertMany(products, {rawResult: true})
 }
-module.exports = { createProduct, createMultipleProducts };
+
+const getAllProducts = async () =>{
+    console.log("Running function");
+    return await Product.find({})
+    .select("-__v")
+    .lean()
+
+}
+module.exports = { createProduct, createMultipleProducts, getAllProducts };
 

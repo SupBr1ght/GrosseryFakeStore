@@ -1,6 +1,7 @@
 const {
   createProduct,
   createMultipleProducts,
+  getAllProducts
 } = require("../services/ProductService");
 
 const addProduct = async (req, res) => {
@@ -37,4 +38,16 @@ const addMultipleProducts = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, addMultipleProducts };
+const getProducts = async (req, res) => {
+  try {
+      const listProducts = await getAllProducts();
+      console.log("🟢 Відправляємо товари:", listProducts);
+      res.status(200).json(listProducts);
+  } catch (error) {
+    console.log("Error when displaying list of goods");
+    res.status(500).json({ message: "server error" });
+    console.log("🟢 Викликаємо res.json()...");
+  }
+};
+
+module.exports = { addProduct, addMultipleProducts, getProducts };
