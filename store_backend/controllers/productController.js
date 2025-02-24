@@ -1,7 +1,9 @@
+const Product = require("../models/Product");
 const {
   createProduct,
   createMultipleProducts,
-  getAllProducts
+  getAllProducts,
+  getUniqueProductById
 } = require("../services/ProductService");
 
 const addProduct = async (req, res) => {
@@ -50,4 +52,22 @@ const getProducts = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, addMultipleProducts, getProducts };
+const getProductById = async (req, res)  => {
+  try {
+
+    console.log("🟢 Отримали ID з запиту:", req.params.id);
+
+    const uniqueProduct = await getUniqueProductById(req.params.id)
+    if(!uniqueProduct){
+      console.log("Product is undefinned");
+    }
+    res.status(200).json(uniqueProduct);
+    
+  } catch (error) {
+    console.log("For some reason we can't display our product!");
+    res.status(404).json({message: "Product not found!"})
+    console.log("Running res.json().....");
+  }
+}
+
+module.exports = { addProduct, addMultipleProducts, getProducts, getProductById };
