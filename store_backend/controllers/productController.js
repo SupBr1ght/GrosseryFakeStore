@@ -5,6 +5,7 @@ const {
   getAllProducts,
   getUniqueProductById,
   updateUnquieProductById,
+  deleteUniqueProductById,
 } = require("../services/ProductService");
 
 const addProduct = async (req, res) => {
@@ -70,10 +71,20 @@ const updateProductById = async (req, res) => {
   }
 };
 
+const deleteProductById = async (req, res) => {
+  try {
+    const deletedUniqueProduct = await deleteUniqueProductById(req.params.id);
+    res.status(200).json(deletedUniqueProduct);
+  } catch (error) {
+    res.status(500).json({ message: "Server's error" });
+  }
+};
+
 module.exports = {
   addProduct,
   addMultipleProducts,
   getProducts,
   getProductById,
   updateProductById,
+  deleteProductById
 };

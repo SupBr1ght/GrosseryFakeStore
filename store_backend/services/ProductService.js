@@ -55,10 +55,22 @@ const updateUnquieProductById = async (id, new_data) => {
   return updateObjectId;
 };
 
+const deleteUniqueProductById = async (id) => {
+  if(!mongoose.isValidObjectId(id)){
+    console.log("Invvalid id format:", id);
+    return null
+  }
+
+  const product = await Product.findByIdAndDelete(id);
+  console.log("Product has deleted");
+  return product
+}
+
 module.exports = {
   createProduct,
   createMultipleProducts,
   getAllProducts,
   getUniqueProductById,
   updateUnquieProductById,
+  deleteUniqueProductById
 };
