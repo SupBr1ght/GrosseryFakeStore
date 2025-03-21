@@ -1,41 +1,86 @@
 const { default: mongoose } = require("mongoose");
+const debug = require('debug')('app:service');
 const Product = require("../models/Product");
 
 const createProduct = async (product) => {
-  const newProduct = new Product(product);
-  await newProduct.save();
+  debug('Creating product:', product)
+  try {
+    const newProduct = new Product(product);
+    await newProduct.save();
+    debug('Product created:', product)
+  
+    return await Product.findById(newProduct._id)
+      .select("-createdAt -updatedAt -__v")
+      .lean(); // `lean()` змушує MongoDB повернути чистий JS-об'єкт
+    
+  } catch (error) {
+    debug('Failed to create  product:', error.message)
+    throw error
+  }
 
-  return await Product.findById(newProduct._id)
-    .select("-createdAt -updatedAt -__v")
-    .lean(); // `lean()` змушує MongoDB повернути чистий JS-об'єкт
 };
 
 const createMultipleProducts = async (products) => {
-  return await Product.insertMany(products, { rawResult: true });
+  debug('Creating bulk of products:', products)
+  try {
+    return await Product.insertMany(products, { rawResult: true });
+  } catch (error) {
+    debug('Failed to create bulk of products:', error.message)
+    throw error
+  }
+  
 };
 
 const getAllProducts = async () => {
-  return await Product.find({}).select("-__v").lean();
+  debug('Get all products:')
+  try {
+    return await Product.find({}).select("-__v").lean();
+  } catch (error) {
+    debug('Failed to get products:', error.message)
+    throw error
+  }
+  
 };
 
 const getUniqueProductById = async (id) => {
-  // Конвертуємо у ObjectId та зберігаємо у змінну
+  try {
+      // Конвертуємо у ObjectId та зберігаємо у змінну
   const objectId = new mongoose.Types.ObjectId(id);
-
+  debug('Getting unique product', id)
   // Шукаємо продукт у базі
   const product = await Product.findById(objectId).select("-__v").lean();
-
+  debug('Unique product by id is', product)
   return product;
+  } catch (error) {
+    debug('Failed to get product by id:', error.message)
+    throw error
+  }
 };
 
-const updateUnquieProductById = async (id, new_data) => {
-  const updateObjectId = await Product.findByIdAndUpdate(id, new_data);
-  return updateObjectId;
+const updateUniqueProductById = async (id, new_data) => {
+  try {
+    debug('Updating product by id....', id)
+    const updateObjectId = await Product.findByIdAndUpdate(id, new_data);
+    debug('Update product by id was succsessful', updateObjectId)
+    return updateObjectId;
+  } catch (error) {
+    debug('Failed to update product by id:', error.message)
+    throw error
+  }
+ 
 };
 
 const deleteUniqueProductById = async (id) => {
-  const product = await Product.findByIdAndDelete(id);
-  return product;
+  try {
+    debug('Deleting product by id....', id)
+    const product = await Product.findByIdAndDelete(id);
+    debug('DELETE product by id was succsesful', product)
+    return product;  
+  } catch (error) {
+    debug('Failed to delete product by id:', error.message)
+    throw error
+  }
+  
 };
 
 module.exports = {
@@ -43,6 +88,6 @@ module.exports = {
   createMultipleProducts,
   getAllProducts,
   getUniqueProductById,
-  updateUnquieProductById,
+  updateUniqueProductById,
   deleteUniqueProductById,
 };

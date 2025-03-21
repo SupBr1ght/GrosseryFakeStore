@@ -4,7 +4,7 @@ const {
   createMultipleProducts,
   getAllProducts,
   getUniqueProductById,
-  updateUnquieProductById,
+  updateUniqueProductById,
   deleteUniqueProductById,
 } = require("../services/ProductService");
 
@@ -21,6 +21,7 @@ const addProduct = async (req, res) => {
   } catch (error) {
     debug('Error in GET /products triggered');
     res.status(500).json({ message: " server error" });
+    throw error
   }
 };
 
@@ -39,6 +40,7 @@ const addMultipleProducts = async (req, res) => {
   } catch (error) {
     debug('Error in POST /products/bulk triggered');
     res.status(500).json({ message: " server error" });
+    throw error
   }
 };
 
@@ -50,6 +52,7 @@ const getProducts = async (req, res) => {
   } catch (error) {
     debug('Error in GET /products triggered');
     res.status(500).json({ message: "server error" });
+    throw error
   }
 };
 
@@ -64,13 +67,14 @@ const getProductById = async (req, res) => {
   } catch (error) {
     debug('Error in GET /products/:id triggered');
     res.status(404).json({ message: "Product not found!" });
+    throw error
   }
 };
 
 const updateProductById = async (req, res) => {
   debug('PUT /products/:id triggered');
   try {
-    const updateUnquieProduct = await updateUnquieProductById(
+    const updateUnquieProduct = await updateUniqueProductById(
       req.params.id,
       req.body
     );
@@ -78,6 +82,7 @@ const updateProductById = async (req, res) => {
   } catch (error) {
     debug('Error in PUT /products/:id triggered');
     res.status(500).json({ message: "Server's error" });
+    throw error
   }
 };
 
@@ -89,6 +94,7 @@ const deleteProductById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server's error" });
     debug('Error in DELETE /products/:id triggered');
+    throw error
   }
 };
 
