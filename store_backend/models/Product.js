@@ -8,7 +8,7 @@ const productSсhema = new mongoose.Schema(
     discount: { type: Number, default: 1 },
   },
   { versionKey: false }
-);
+); 
 
 const Product = mongoose.model("Product", productSсhema);
 module.exports = mongoose.model("Product", productSсhema);

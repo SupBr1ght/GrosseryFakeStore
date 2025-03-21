@@ -10,6 +10,7 @@ const {
 
 const addProduct = async (req, res) => {
   try {
+   
     if (!req.body || Object.keys(req.body) === 0) {
       return res
         .status(400)

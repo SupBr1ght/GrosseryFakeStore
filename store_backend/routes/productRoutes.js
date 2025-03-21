@@ -10,15 +10,15 @@ const {
 } = require("../controllers/productController");
 
 // add good
-router.post("/api/products", addProduct);
+router.post("/products", addProduct);
 // add many goods
-router.post("/api/products/bulk", addMultipleProducts);
+router.post("/products/bulk", addMultipleProducts);
 // show goods
-router.get("/api/products", getProducts);
+router.get("/products", getProducts);
 // show unique good
-router.get("/api/products/:id", getProductById);
+router.get("/products/:id", getProductById);
 // upodate our product
-router.put("/api/products/:id", updateProductById);
+router.put("/products/:id", updateProductById);
 // delete a product
-router.delete("/api/products/:id", deleteProductById);
+router.delete("/products/:id", deleteProductById);
 module.exports = router;
