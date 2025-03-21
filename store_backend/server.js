@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes')
+const debug = require('debug')('app:server');
 
 const app = express();
 const PORT = process.env.PORT || 5000; // port not found
@@ -26,5 +27,6 @@ app.get('/', (req,  res) =>{
 });
 
 app.listen(PORT, ()=>{
-    console.log(`Server is running on ${PORT}`);
+    debug('Server is starting...');
 })
+

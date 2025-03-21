@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+const debug = require('debug')('app:controller');
 const {
   createProduct,
   createMultipleProducts,
@@ -9,8 +9,8 @@ const {
 } = require("../services/ProductService");
 
 const addProduct = async (req, res) => {
+  debug('POST /products triggered');
   try {
-   
     if (!req.body || Object.keys(req.body) === 0) {
       return res
         .status(400)
@@ -19,11 +19,13 @@ const addProduct = async (req, res) => {
     const newProduct = await createProduct(req.body);
     res.status(201).json(newProduct);
   } catch (error) {
+    debug('Error in GET /products triggered');
     res.status(500).json({ message: " server error" });
   }
 };
 
 const addMultipleProducts = async (req, res) => {
+  debug('POST /products/bulk triggered');
   try {
     if (!req.body || Object.keys(req.body) === 0) {
       return res
@@ -35,20 +37,24 @@ const addMultipleProducts = async (req, res) => {
       res.status(201).json(req.body);
     }
   } catch (error) {
+    debug('Error in POST /products/bulk triggered');
     res.status(500).json({ message: " server error" });
   }
 };
 
 const getProducts = async (req, res) => {
+  debug('GET /products triggered');
   try {
     const listProducts = await getAllProducts();
     res.status(200).json(listProducts);
   } catch (error) {
+    debug('Error in GET /products triggered');
     res.status(500).json({ message: "server error" });
   }
 };
 
 const getProductById = async (req, res) => {
+  debug('GET /products/:id triggered');
   try {
     const uniqueProduct = await getUniqueProductById(req.params.id);
     if (!uniqueProduct) {
@@ -56,11 +62,13 @@ const getProductById = async (req, res) => {
     }
     res.status(200).json(uniqueProduct);
   } catch (error) {
+    debug('Error in GET /products/:id triggered');
     res.status(404).json({ message: "Product not found!" });
   }
 };
 
 const updateProductById = async (req, res) => {
+  debug('PUT /products/:id triggered');
   try {
     const updateUnquieProduct = await updateUnquieProductById(
       req.params.id,
@@ -68,16 +76,19 @@ const updateProductById = async (req, res) => {
     );
     res.status(200).json(updateUnquieProduct);
   } catch (error) {
+    debug('Error in PUT /products/:id triggered');
     res.status(500).json({ message: "Server's error" });
   }
 };
 
 const deleteProductById = async (req, res) => {
+  debug('DELETE /products/:id triggered');
   try {
     const deletedUniqueProduct = await deleteUniqueProductById(req.params.id);
     res.status(200).json(deletedUniqueProduct);
   } catch (error) {
     res.status(500).json({ message: "Server's error" });
+    debug('Error in DELETE /products/:id triggered');
   }
 };
 
