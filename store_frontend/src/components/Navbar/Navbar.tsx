@@ -11,7 +11,7 @@ export default function Navbar() {
             className="w-full h-full object-contain"
           />
         </div>
-        <ul className="space-x-40 pr-10 flex items-center ">
+        <ul className="space-x-10 pr-10 flex items-center ">
           <li>
             <Link
               className="px-6 py-3 text-white rounded-sm hover:bg-yellow-300/20 transition"
@@ -42,6 +42,22 @@ export default function Navbar() {
               to="/profile"
             >
               Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              className=" px-6 py-3 block text-white  rounded-sm hover:bg-yellow-300/20 transition "
+              to="/login"
+            >
+              Login
+            </Link>
+          </li>
+          <li>
+            <Link
+              className=" px-6 py-3 block text-white  rounded-sm hover:bg-yellow-300/20 transition "
+              to="/register"
+            >
+              Register
             </Link>
           </li>
         </ul>
