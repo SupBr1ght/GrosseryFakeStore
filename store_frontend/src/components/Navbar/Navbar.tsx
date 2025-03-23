@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
 import FF_logo from "../../assets/FF_logo.svg";
+import NavbarLink from "./NavbarLink";
+import { useLocation } from "react-router-dom";
+
 export default function Navbar() {
+  const location = useLocation();
+  const links = [
+    { to: "/about", label: "About" },
+    { to: "/cards", label: "Cards" },
+    { to: "/profile", label: "Profile" },
+    { to: "/login", label: "Log in" },
+    { to: "/register", label: "Sighn in" },
+  ];
+
   return (
     <>
       <nav className="bg-lime-700 flex  items-center px-6 py-4 justify-between">
@@ -11,55 +22,15 @@ export default function Navbar() {
             className="w-full h-full object-contain"
           />
         </div>
-        <ul className="space-x-10 pr-10 flex items-center ">
-          <li>
-            <Link
-              className="px-6 py-3 text-white rounded-sm hover:bg-yellow-300/20 transition"
-              to="/about"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="px-6 py-3  text-white rounded-sm hover:bg-yellow-300/20 transition "
-              to="/product"
-            >
-              Product_Info
-            </Link>
-          </li>
-          <li>
-            <Link
-              className=" px-6 py-3 text-white rounded-sm  transition hover:bg-yellow-300/20 hower: transition "
-              to="/cards"
-            >
-              Cards
-            </Link>
-          </li>
-          <li>
-            <Link
-              className=" px-6 py-3 block text-white  rounded-sm hover:bg-yellow-300/20 transition "
-              to="/profile"
-            >
-              Profile
-            </Link>
-          </li>
-          <li>
-            <Link
-              className=" px-6 py-3 block text-white  rounded-sm hover:bg-yellow-300/20 transition "
-              to="/login"
-            >
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link
-              className=" px-6 py-3 block text-white  rounded-sm hover:bg-yellow-300/20 transition "
-              to="/register"
-            >
-              Register
-            </Link>
-          </li>
+        <ul className="space-x-5 pr-10 flex items-center ">
+          {links.map((link) => (
+            <NavbarLink
+              key={link.to}
+              to={link.to}
+              label={link.label}
+              isActive={location.pathname === link.to}
+            />
+          ))}
         </ul>
       </nav>
     </>
